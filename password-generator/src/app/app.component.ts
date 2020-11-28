@@ -16,9 +16,7 @@ export class AppComponent {
 
   onLengthChange(value: string){
     const parsedValue = parseInt(value);
-    if(!isNaN(parsedValue)){
-      this.length = parsedValue;
-    }
+    this.length = !isNaN(parsedValue) ? parsedValue : 0;
   }
 
   onUseLettersChange(){
@@ -34,32 +32,37 @@ export class AppComponent {
   }
 
   onButtonClick(){
-    const numbers = "1234567890";
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    const symbols = "!@#$^&*";    
-    let validChars = "";
+
     let randomGeneratedPassword = "";
-
-    if(this.includeLetters){
-      validChars += letters;
-    }
-
-    if(this.includeNumbers){
-      validChars += numbers;
-    }
-
-    if(this.includeSymbols){
-      validChars += symbols;
-    }
+    let selectedChars = this.getSelectedChars();
 
     for(let i = 0; i < this.length; i++){
-      const randomIndex = Math.floor(Math.random() * validChars.length);
+      const randomIndex = Math.floor(Math.random() * selectedChars.length);
 
-      randomGeneratedPassword += validChars[randomIndex];
+      randomGeneratedPassword += selectedChars[randomIndex];
     }
 
     this.password = randomGeneratedPassword;
-    
-  } 
- 
+  }  
+
+  getSelectedChars(){
+    const numbers = "1234567890";
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const symbols = "!@#$^&*"; 
+    let chars = "";
+
+    if(this.includeLetters){
+      chars += letters;
+    }
+
+    if(this.includeNumbers){
+      chars += numbers;
+    }
+
+    if(this.includeSymbols){
+      chars += symbols;
+    }
+
+    return chars;
+  }
 }
